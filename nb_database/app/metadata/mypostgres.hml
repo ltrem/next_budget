@@ -476,6 +476,41 @@ definition:
                 type: named
                 name: timestamp
       object_types:
+        categories:
+          fields:
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+            description:
+              type:
+                type: named
+                name: text
+            id:
+              type:
+                type: named
+                name: int4
+            name:
+              type:
+                type: named
+                name: text
+        delete_categories_by_id_response:
+          description: Responses from the 'delete_categories_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: categories
         delete_posts_by_id_response:
           description: Responses from the 'delete_posts_by_id' procedure
           fields:
@@ -506,6 +541,43 @@ definition:
                 element_type:
                   type: named
                   name: users
+        insert_categories_object:
+          fields:
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+            description:
+              type:
+                type: named
+                name: text
+            id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            name:
+              type:
+                type: named
+                name: text
+        insert_categories_response:
+          description: Responses from the 'insert_categories' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: categories
         insert_posts_object:
           fields:
             content:
@@ -602,6 +674,86 @@ definition:
               type:
                 type: named
                 name: int4
+        update_categories_by_id_response:
+          description: Responses from the 'update_categories_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: categories
+        update_categories_by_id_update_columns:
+          description: Update the columns of the 'categories' collection
+          fields:
+            created_at:
+              description: Update the 'created_at' column in the 'categories' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_categories_created_at
+            description:
+              description: Update the 'description' column in the 'categories' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_categories_description
+            id:
+              description: Update the 'id' column in the 'categories' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_categories_id
+            name:
+              description: Update the 'name' column in the 'categories' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_categories_name
+        update_column_categories_created_at:
+          description: Update the 'created_at' column in the 'categories' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+        update_column_categories_description:
+          description: Update the 'description' column in the 'categories' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
+        update_column_categories_id:
+          description: Update the 'id' column in the 'categories' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: int4
+        update_column_categories_name:
+          description: Update the 'name' column in the 'categories' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: text
         update_column_posts_content:
           description: Update the 'content' column in the 'posts' collection
           fields:
@@ -775,6 +927,14 @@ definition:
                 type: named
                 name: text
       collections:
+        - name: categories
+          arguments: {}
+          type: categories
+          uniqueness_constraints:
+            categories_pkey:
+              unique_columns:
+                - id
+          foreign_keys: {}
         - name: posts
           arguments: {}
           type: posts
@@ -797,6 +957,23 @@ definition:
           foreign_keys: {}
       functions: []
       procedures:
+        - name: delete_categories_by_id
+          description: Delete any row on the 'categories' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: int4
+            pre_check:
+              description: Delete permission predicate over the 'categories' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: categories
+          result_type:
+            type: named
+            name: delete_categories_by_id_response
         - name: delete_posts_by_id
           description: Delete any row on the 'posts' collection using the 'id' key
           arguments:
@@ -831,6 +1008,25 @@ definition:
           result_type:
             type: named
             name: delete_users_by_id_response
+        - name: insert_categories
+          description: Insert into the categories table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_categories_object
+            post_check:
+              description: Insert permission predicate over the 'categories' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: categories
+          result_type:
+            type: named
+            name: insert_categories_response
         - name: insert_posts
           description: Insert into the posts table
           arguments:
@@ -869,6 +1065,34 @@ definition:
           result_type:
             type: named
             name: insert_users_response
+        - name: update_categories_by_id
+          description: Update any row on the 'categories' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: int4
+            post_check:
+              description: Update permission post-condition predicate over the 'categories' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: categories
+            pre_check:
+              description: Update permission pre-condition predicate over the 'categories' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: categories
+            update_columns:
+              type:
+                type: named
+                name: update_categories_by_id_update_columns
+          result_type:
+            type: named
+            name: update_categories_by_id_response
         - name: update_posts_by_id
           description: Update any row on the 'posts' collection using the 'id' key
           arguments:

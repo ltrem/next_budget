@@ -3,10 +3,10 @@
 import { useQuery, gql } from "@apollo/client";
 
 const QUERY = gql`
-  query Posts {
-    posts {
-      title
-      content
+  query GetCategories {
+    categories {
+      name
+      description
     }
   }
 `;
@@ -26,14 +26,14 @@ export default function Category() {
   }
 
   // TODO: Fix typing so we don't have to manually
-  const posts: [{ title: string; content: string }] = data.posts;
+  const categories: [{ name: string; description: string }] = data.categories;
 
   return (
     <div>
-      {posts.map((post) => (
-        <div key={post.title}>
-          <h3>{post.title}</h3>
-          <p>{post.content}</p>
+      {categories.map((post) => (
+        <div key={post.name}>
+          <h3>{post.name}</h3>
+          <p>{post.description}</p>
         </div>
       ))}
     </div>

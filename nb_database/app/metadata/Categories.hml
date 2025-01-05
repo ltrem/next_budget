@@ -1,0 +1,156 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Categories
+  fields:
+    - name: createdAt
+      type: Timestamp
+    - name: description
+      type: Text!
+    - name: id
+      type: Int4!
+    - name: name
+      type: Text!
+  graphql:
+    typeName: Categories
+    inputTypeName: CategoriesInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: categories
+      fieldMapping:
+        createdAt:
+          column:
+            name: created_at
+        description:
+          column:
+            name: description
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Categories
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - createdAt
+          - description
+          - id
+          - name
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: CategoriesBoolExp
+  operand:
+    object:
+      type: Categories
+      comparableFields:
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: id
+          booleanExpressionType: Int4BoolExp
+        - fieldName: name
+          booleanExpressionType: TextBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: CategoriesBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: CategoriesAggExp
+  operand:
+    object:
+      aggregatedType: Categories
+      aggregatableFields:
+        - fieldName: createdAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: id
+          aggregateExpression: Int4AggExp
+        - fieldName: name
+          aggregateExpression: TextAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: CategoriesAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: CategoriesOrderByExp
+  operand:
+    object:
+      orderedType: Categories
+      orderableFields:
+        - fieldName: createdAt
+          orderByExpression: TimestampOrderByExp
+        - fieldName: description
+          orderByExpression: TextOrderByExp
+        - fieldName: id
+          orderByExpression: Int4OrderByExp
+        - fieldName: name
+          orderByExpression: TextOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: CategoriesOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Categories
+  objectType: Categories
+  source:
+    dataConnectorName: mypostgres
+    collection: categories
+  filterExpressionType: CategoriesBoolExp
+  aggregateExpression: CategoriesAggExp
+  orderByExpression: CategoriesOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: categories
+      subscription:
+        rootField: categories
+    selectUniques:
+      - queryRootField: categoriesById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: categoriesById
+    filterInputTypeName: CategoriesFilterInput
+    aggregate:
+      queryRootField: categoriesAggregate
+      subscription:
+        rootField: categoriesAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Categories
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

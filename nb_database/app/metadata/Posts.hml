@@ -1,0 +1,188 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Posts
+  fields:
+    - name: content
+      type: Text!
+    - name: createdAt
+      type: Timestamp
+    - name: id
+      type: Int4!
+    - name: title
+      type: Text!
+    - name: userId
+      type: Int4!
+  graphql:
+    typeName: Posts
+    inputTypeName: PostsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: posts
+      fieldMapping:
+        content:
+          column:
+            name: content
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        title:
+          column:
+            name: title
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Posts
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - content
+          - createdAt
+          - id
+          - title
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: PostsBoolExp
+  operand:
+    object:
+      type: Posts
+      comparableFields:
+        - fieldName: content
+          booleanExpressionType: TextBoolExp
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: id
+          booleanExpressionType: Int4BoolExp
+        - fieldName: title
+          booleanExpressionType: TextBoolExp
+        - fieldName: userId
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships:
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: PostsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: PostsAggExp
+  operand:
+    object:
+      aggregatedType: Posts
+      aggregatableFields:
+        - fieldName: content
+          aggregateExpression: TextAggExp
+        - fieldName: createdAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: id
+          aggregateExpression: Int4AggExp
+        - fieldName: title
+          aggregateExpression: TextAggExp
+        - fieldName: userId
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: PostsAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: PostsOrderByExp
+  operand:
+    object:
+      orderedType: Posts
+      orderableFields:
+        - fieldName: content
+          orderByExpression: TextOrderByExp
+        - fieldName: createdAt
+          orderByExpression: TimestampOrderByExp
+        - fieldName: id
+          orderByExpression: Int4OrderByExp
+        - fieldName: title
+          orderByExpression: TextOrderByExp
+        - fieldName: userId
+          orderByExpression: Int4OrderByExp
+      orderableRelationships:
+        - relationshipName: user
+  graphql:
+    expressionTypeName: PostsOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Posts
+  objectType: Posts
+  source:
+    dataConnectorName: mypostgres
+    collection: posts
+  filterExpressionType: PostsBoolExp
+  aggregateExpression: PostsAggExp
+  orderByExpression: PostsOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: posts
+      subscription:
+        rootField: posts
+    selectUniques:
+      - queryRootField: postsById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: postsById
+    filterInputTypeName: PostsFilterInput
+    aggregate:
+      queryRootField: postsAggregate
+      subscription:
+        rootField: postsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Posts
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: Posts
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: id
+

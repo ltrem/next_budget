@@ -1,0 +1,299 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPostsContent
+  description: Update the 'content' column in the 'posts' collection
+  fields:
+    - name: set
+      type: Text!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPostsContent
+    inputTypeName: UpdateColumnPostsContentInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: update_column_posts_content
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPostsContent
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPostsCreatedAt
+  description: Update the 'created_at' column in the 'posts' collection
+  fields:
+    - name: set
+      type: Timestamp
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPostsCreatedAt
+    inputTypeName: UpdateColumnPostsCreatedAtInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: update_column_posts_created_at
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPostsCreatedAt
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPostsId
+  description: Update the 'id' column in the 'posts' collection
+  fields:
+    - name: set
+      type: Int4!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPostsId
+    inputTypeName: UpdateColumnPostsIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: update_column_posts_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPostsId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPostsTitle
+  description: Update the 'title' column in the 'posts' collection
+  fields:
+    - name: set
+      type: Text!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPostsTitle
+    inputTypeName: UpdateColumnPostsTitleInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: update_column_posts_title
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPostsTitle
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnPostsUserId
+  description: Update the 'user_id' column in the 'posts' collection
+  fields:
+    - name: set
+      type: Int4!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnPostsUserId
+    inputTypeName: UpdateColumnPostsUserIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: update_column_posts_user_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnPostsUserId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePostsByIdUpdateColumns
+  description: Update the columns of the 'posts' collection
+  fields:
+    - name: content
+      type: UpdateColumnPostsContent
+      description: Update the 'content' column in the 'posts' collection.
+    - name: createdAt
+      type: UpdateColumnPostsCreatedAt
+      description: Update the 'created_at' column in the 'posts' collection.
+    - name: id
+      type: UpdateColumnPostsId
+      description: Update the 'id' column in the 'posts' collection.
+    - name: title
+      type: UpdateColumnPostsTitle
+      description: Update the 'title' column in the 'posts' collection.
+    - name: userId
+      type: UpdateColumnPostsUserId
+      description: Update the 'user_id' column in the 'posts' collection.
+  graphql:
+    typeName: UpdatePostsByIdUpdateColumns
+    inputTypeName: UpdatePostsByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: update_posts_by_id_update_columns
+      fieldMapping:
+        content:
+          column:
+            name: content
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        title:
+          column:
+            name: title
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePostsByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - content
+          - createdAt
+          - id
+          - title
+          - userId
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdatePostsByIdResponse
+  description: Responses from the 'update_posts_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int4!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Posts!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdatePostsByIdResponse
+    inputTypeName: UpdatePostsByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mypostgres
+      dataConnectorObjectType: update_posts_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdatePostsByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdatePostsById
+  outputType: UpdatePostsByIdResponse!
+  arguments:
+    - name: keyId
+      type: Int4!
+    - name: postCheck
+      type: PostsBoolExp
+      description: Update permission post-condition predicate over the 'posts' collection
+    - name: preCheck
+      type: PostsBoolExp
+      description: Update permission pre-condition predicate over the 'posts' collection
+    - name: updateColumns
+      type: UpdatePostsByIdUpdateColumns!
+  source:
+    dataConnectorName: mypostgres
+    dataConnectorCommand:
+      procedure: update_posts_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updatePostsById
+    rootFieldKind: Mutation
+  description: Update any row on the 'posts' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdatePostsById
+  permissions:
+    - role: admin
+      allowExecution: true
+

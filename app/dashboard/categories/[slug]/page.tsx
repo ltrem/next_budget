@@ -22,7 +22,7 @@ export default function Page({
 
   const { data, loading, error } = useQuery(QUERY, {
     variables: { id: slug },
-    pollInterval: 500,
+    pollInterval: 5000,
   });
 
   if (loading) {
